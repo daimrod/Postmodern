@@ -587,6 +587,9 @@ the proper SQL syntax for joining tables."
 (def-sql-op :order-by (form &rest fields)
   `("(" ,@(sql-expand form) " ORDER BY " ,@(sql-expand-list fields) ")"))
 
+(def-sql-op :over (form &rest fields)
+  `(,@(sql-expand form) " OVER (" ,@(sql-expand-list fields) ")"))
+
 (def-sql-op :set-constraints (state &rest constraints)
   `("SET CONSTRAINTS " ,@(if constraints
                              (sql-expand-list constraints)
