@@ -589,7 +589,13 @@ the proper SQL syntax for joining tables."
   `("(" ,@(sql-expand form) " LIMIT " ,@(sql-expand amount) ,@(if offset (cons " OFFSET " (sql-expand offset)) ()) ")"))
 
 (def-sql-op :order-by (form &rest fields)
-  `("(" ,@(sql-expand form) " ORDER BY " ,@(sql-expand-list fields) ")"))
+  `("(" ,@(when form `(,@(sql-expand form) " ")) "ORDER BY " ,@(sql-expand-list fields) ")"))
+
+(def-sql-op :over (form &rest fields)
+  `(,@(sql-expand form) " OVER " ,@(or (sql-expand-list fields) "()")))
+
+(def-sql-op :partition-by (&rest args)
+  `("PARTITION BY " ,@(sql-expand-list args)))
 
 (def-sql-op :set-constraints (state &rest constraints)
   `("SET CONSTRAINTS " ,@(if constraints
