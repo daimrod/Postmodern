@@ -608,7 +608,7 @@ the proper SQL syntax for joining tables."
   `(,@(sql-expand form) " OVER " ,@(or (sql-expand-list fields) "()")))
 
 (def-sql-op :partition-by (&rest args)
-  `("PARTITION BY " ,@(sql-expand-list args)))
+  `("(PARTITION BY " ,@(sql-expand-list args) ")"))
 
 (def-sql-op :set-constraints (state &rest constraints)
   `("SET CONSTRAINTS " ,@(if constraints
